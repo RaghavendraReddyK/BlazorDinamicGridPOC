@@ -1,0 +1,15 @@
+﻿@page "/"
+@namespace DynamicGridGeneration.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+
+<component type="typeof(App)" render-mode="ServerPrerendered" />
+
+<head>
+    <link href="~/css/column-creation.css" rel="stylesheet" />
+    <link href="~/css/StudentDetails.css" rel="stylesheet" />
+
+</head>
+

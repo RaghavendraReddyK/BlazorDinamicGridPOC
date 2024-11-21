@@ -1,0 +1,101 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\DynamicGridGeneration.bundle.scp.css",
+      "PackagePath": "staticwebassets\\DynamicGridGeneration.bundle.scp.css"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\css\\StudentDetails.css",
+      "PackagePath": "staticwebassets\\css\\StudentDetails.css"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\css\\column-creation.css",
+      "PackagePath": "staticwebassets\\css\\column-creation.css"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\css\\open-iconic\\README.md",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\README.md"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\uploads\\16130ce3-61f4-49b7-b844-a3fabca3c495_std2.jpg",
+      "PackagePath": "staticwebassets\\uploads\\16130ce3-61f4-49b7-b844-a3fabca3c495_std2.jpg"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\uploads\\28962870-3c61-4a98-a111-3e92af023cd5_std2.jpg",
+      "PackagePath": "staticwebassets\\uploads\\28962870-3c61-4a98-a111-3e92af023cd5_std2.jpg"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\uploads\\6eaf7f70-f59d-43b7-a1e4-cc83bb9d7e4e_std1.jpg",
+      "PackagePath": "staticwebassets\\uploads\\6eaf7f70-f59d-43b7-a1e4-cc83bb9d7e4e_std1.jpg"
+    },
+    {
+      "Id": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\uploads\\ac4326f3-c279-44b9-b4bc-26b5569d38b3_std1.jpg",
+      "PackagePath": "staticwebassets\\uploads\\ac4326f3-c279-44b9-b4bc-26b5569d38b3_std1.jpg"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.DynamicGridGeneration.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.build.DynamicGridGeneration.props",
+      "PackagePath": "build\\DynamicGridGeneration.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.DynamicGridGeneration.props",
+      "PackagePath": "buildMultiTargeting\\DynamicGridGeneration.props"
+    },
+    {
+      "Id": "obj\\Debug\\net6.0\\staticwebassets\\msbuild.buildTransitive.DynamicGridGeneration.props",
+      "PackagePath": "buildTransitive\\DynamicGridGeneration.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

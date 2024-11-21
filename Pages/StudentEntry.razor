@@ -1,0 +1,175 @@
+﻿@page "/StudentDetails"
+@inject StudentDataService StudentDataService;
+
+<TelerikListView Data="@StudentData">
+    <HeaderTemplate>
+        Students List
+    </HeaderTemplate>
+    <Template>
+        <div class="student-card">
+            <div class="student-card-content">
+                <img src="@context.Image" alt="Student Image" class="student-image">
+                <div>
+                    <h3 class="student-name">@context.Name</h3>
+                    <p class="student-gender">Gender: @context.Gender</p>
+                </div>
+            </div>
+            <div class="student-details">
+                <p><b>Age:</b> @context.Age</p>
+                <p><b>Date of Birth:</b> @context.DateOfBirth.ToString("MM/dd/yyyy")</p>
+            </div>
+            <div class="student-actions">
+                <TelerikButton OnClick="@(() => OpenEditDialog(@context))">Edit</TelerikButton>
+            </div>
+        </div>
+    </Template>
+</TelerikListView>
+
+<TelerikDialog Visible="@IsEditDialogOpen" Title="Edit Student" Width="600px" Height="400px">
+    <DialogContent>
+    <EditForm Model="@SelectedStudent" OnValidSubmit="SaveStudent">
+        <div class="edit-form">
+            <h3>Edit Student</h3>
+            <div class="form-group">
+                <label>Name:</label>
+                <InputText class="form-control" @bind-Value="SelectedStudent.Name" />
+            </div>
+            <div class="form-group">
+                <label>Age:</label>
+                <InputNumber class="form-control" @bind-Value="SelectedStudent.Age" />
+            </div>
+                <div class="form-group">
+                    <label>Date of Birth:</label>
+                    <TelerikDatePicker @bind-Value="SelectedStudent.DateOfBirth"
+                                       Class="form-control"
+                                       Format="MM/dd/yyyy" >
+                                        <DatePickerFormatPlaceholder Day="day" Month="month" Year="year"/>
+                    </TelerikDatePicker>
+                </div>
+
+                <div class="form-group">
+                    <label>Gender:</label>
+                    <TelerikDropDownList @bind-Value="SelectedStudent.Gender"
+                                         Data="@GenderOptions"
+                                         TextField="Text"
+                                         ValueField="Value"
+                                         Class="form-control"
+                                         />
+                </div>
+
+                <div class="image-preview">
+                    <img src="@SelectedStudent.Image" alt="Preview" />
+                </div>
+                <div class="form-group">
+                    <label><strong>Image upload</strong></label><br />
+                    <InputFile class="form-control"  OnChange="@OnSelect" />
+                </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">Save</button>
+                <button type="button" class="btn btn-secondary" @onclick="CloseEditDialog">Cancel</button>
+            </div>
+        </div>
+    </EditForm>
+    </DialogContent>
+</TelerikDialog>
+
+@code {
+    public List<Student> StudentData { get; set; } = new();
+    public Student SelectedStudent { get; set; } = new();
+    public bool IsEditDialogOpen { get; set; }
+
+    public Student EditItem { get; set; }
+    public List<string> AllowedExtensions { get; set; } = new List<string>() { ".jpg", ".png", ".gif" };
+    private const long MaxFileSize = 5 * 1024 * 1024; // 5 MB in bytes
+
+    public class GenderOption
+    {
+        public string Text { get; set; }
+        public string Value { get; set; }
+    }
+
+    // List of gender options
+    public List<GenderOption> GenderOptions { get; set; } = new List<GenderOption>
+    {
+        new GenderOption { Text = "Male", Value = "Male" },
+        new GenderOption { Text = "Female", Value = "Female" },
+        new GenderOption { Text = "Other", Value = "Other" }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetStudentsData();
+    }
+
+    private async Task GetStudentsData()
+    {
+        StudentData = await StudentDataService.GetStudentsAsync();
+    }
+
+    private void OpenEditDialog(Student student)
+    {
+        SelectedStudent = student;
+        IsEditDialogOpen = true;
+    }
+
+    private void CloseEditDialog()
+    {
+        IsEditDialogOpen = false;
+    }
+
+    private async Task SaveStudent()
+    {
+        await StudentDataService.UpdateStudentAsync(SelectedStudent);
+
+        // Refresh data and close dialog
+        await GetStudentsData();
+        CloseEditDialog();
+    }
+
+    private async Task OnSelect(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null && AllowedExtensions.Contains(Path.GetExtension(file.Name)))
+        {
+            if (file.Size > MaxFileSize)
+            {
+                // Optionally display a message for file size exceeding the limit
+                Console.WriteLine("File size exceeds the 5MB limit.");
+                return;
+            }
+
+            var fileName = Path.GetFileName(file.Name);
+            var uniqueFileName = $"{Guid.NewGuid()}_{fileName}";
+            var filePath = Path.Combine("wwwroot", "uploads", uniqueFileName);
+
+            // Ensure the uploads directory exists
+            var uploadsDir = Path.Combine("wwwroot", "uploads");
+            if (!Directory.Exists(uploadsDir))
+            {
+                Directory.CreateDirectory(uploadsDir);
+            }
+
+            // Save the file to the server
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.OpenReadStream(MaxFileSize).CopyToAsync(fileStream);
+            }
+
+            // Assign the uploaded file path to the selected student's image
+            if (SelectedStudent != null)
+            {
+                SelectedStudent.Image = $"/uploads/{uniqueFileName}";
+            }
+            else
+            {
+                Console.WriteLine("SelectedStudent is null. Cannot assign image.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Invalid file type or no file selected.");
+        }
+    }
+
+}

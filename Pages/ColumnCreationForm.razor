@@ -1,0 +1,249 @@
+﻿@page "/ColumnCreation"
+@using DynamicGridGeneration.Services
+@inject DataBaseServices DataBaseServices
+@inject IJSRuntime JSRuntime
+
+<h3>Column Creation with Dialog</h3>
+
+<!-- Buttons -->
+<div class="button-group">
+    <button class="btn btn-primary" @onclick="ShowAddColumnDialog">Add Column +</button>
+    <button class="btn btn-secondary" @onclick="ShowVisibilityDialog">Hide/Show Column</button>
+    <button class="btn btn-primary" @onclick="OpenAddRowDialog">Add New Row</button>
+</div>
+
+<!-- Add Column Dialog -->
+<TelerikDialog @ref="dialogRef" Title="Add New Column" Visible="isDialogVisible" Width="500px" ShowCloseButton="false" ThemeColor="primary">
+    <DialogContent>
+        <EditForm Model="FormData" OnValidSubmit="SubmitAddColumn">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="tableName">Table Name</label>
+                <InputText @bind-Value="FormData.TableName" id="tableName" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="columnName">Column Name</label>
+                <InputText @bind-Value="FormData.ColumnName" id="columnName" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="dataType">Data Type</label>
+                <InputSelect @bind-Value="FormData.DataType" id="dataType" class="form-control">
+                    <option value="">Select Data Type</option>
+                    <option value="VARCHAR(100)">VARCHAR(100)</option>
+                    <option value="INT">INT</option>
+                    <option value="DATE">DATE</option>
+                    <option value="FLOAT">FLOAT</option>
+                </InputSelect>
+            </div>
+            <button type="submit" class="btn-submit">Submit</button>
+        </EditForm>
+    </DialogContent>
+    <DialogButtons>
+        <TelerikButton class="btn-grad" @onclick="CloseAddColumnDialog">Cancel</TelerikButton>
+    </DialogButtons>
+</TelerikDialog>
+
+<!-- Hide/Show Column Dialog -->
+<TelerikDialog @ref="visibilityDialogRef" Title="Hide/Show Column" Visible="isVisibilityDialogVisible" Width="400px" ShowCloseButton="false" ThemeColor="primary">
+    <DialogContent>
+        <div class="col-select">
+            @foreach (var column in Columns)
+            {
+                <div class="col-item">
+                    <input type="checkbox" checked="@column.IsVisible" @onchange="(e) => ToggleColumnVisibility(column, e.Value)" /> @column.ColumnName
+                </div>
+            }
+        </div>
+    </DialogContent>
+    <DialogButtons>
+        <TelerikButton class="btn-grad" @onclick="CloseVisibilityDialog">Close</TelerikButton>
+    </DialogButtons>
+</TelerikDialog>
+
+<!-- Add Row Dialog -->
+<TelerikDialog @ref="popIsVisible" Visible="isPopUpDialogVisible" Title="Add New Row" ShowCloseButton="false">
+    <DialogContent>
+        @foreach (var column in Columns.Where(c => c.IsVisible))
+        {
+            <div class="add-row-data">
+                <label>@column.ColumnName</label>
+                <input type="text" @onchange="(e) => HandleInputChange(e, column.ColumnName)" placeholder="Enter '@column.ColumnName'" />
+            </div>
+        }
+    </DialogContent>
+    <DialogButtons>
+        <TelerikButton @onclick="SubmitNewRow">Submit</TelerikButton>
+        <TelerikButton class="btn-grad" @onclick="CloseAddRowDialog">Close</TelerikButton>
+    </DialogButtons>
+</TelerikDialog>
+
+<!-- Edit Employee Dialog -->
+<TelerikDialog Visible="isEditPopUp" Title="Edit Employee Details" ShowCloseButton = "false">
+    <DialogContent>
+        @foreach (var emp in EmpData)
+        {
+            <div>
+                <label for="@emp.Key">@emp.Key</label>
+                <input type="text" @bind-value="@EmpData[emp.Key]" placeholder="Enter '@emp.Key'" />
+            </div>
+        }
+    </DialogContent>
+    <DialogButtons>
+        <TelerikButton class="btn-grad" @onclick="SubmitEmployeeUpdate">Update</TelerikButton>
+        <TelerikButton class="btn-grad" @onclick="CloseEditDialog">Close</TelerikButton>
+    </DialogButtons>
+</TelerikDialog>
+
+<!-- Employee Grid -->
+@if (isLoading)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <TelerikGrid Data="@Emp" Pageable="true" Sortable="true" >
+        <GridColumns>
+            <GridColumn>
+                <Template Context="row">
+                    <TelerikButton @onclick="() => OpenEditDialog(row)" Icon="SvgIcon.Pencil"></TelerikButton>
+                    <TelerikButton Class="btn-danger" @onclick="() => DeleteEmployee(row)" Icon="SvgIcon.Trash"></TelerikButton>
+                </Template>
+            </GridColumn>
+            @foreach (var column in Columns.Where(c => c.IsVisible))
+            {
+                <GridColumn Field="@column.ColumnName" Title="@column.ColumnName" />
+            }
+        </GridColumns>
+    </TelerikGrid>
+}
+
+@code {
+    // Properties
+    private TelerikDialog dialogRef { get; set; }
+    private TelerikDialog visibilityDialogRef { get; set; }
+    private TelerikDialog popIsVisible { get; set; }
+    private bool isDialogVisible, isVisibilityDialogVisible, isPopUpDialogVisible, isEditPopUp = false;
+
+    private string SelectedEmployeeId;
+    private bool isLoading = false;
+
+    public FormInputModel FormData { get; set; } = new();
+    public List<ColumnVisibility> Columns { get; set; } = new();
+    public List<dynamic> Emp { get; set; } = new();
+    private Dictionary<string, string> EmpData { get; set; } = new();
+    private Dictionary<string, object> EmployeeData { get; set; } = new();
+
+    // Initialization
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadEmployeeDataAsync();
+    }
+
+    // Dialog Methods
+    private void ShowAddColumnDialog() => isDialogVisible = true;
+    private void CloseAddColumnDialog() => isDialogVisible = false;
+
+    private void ShowVisibilityDialog() => isVisibilityDialogVisible = true;
+    private void CloseVisibilityDialog() => isVisibilityDialogVisible = false;
+
+    private void OpenAddRowDialog() => isPopUpDialogVisible = true;
+    private void CloseAddRowDialog() => isPopUpDialogVisible = false;
+
+    private void OpenEditDialog(dynamic employee)
+    {
+        EmpData = ((IDictionary<string, object>)employee).ToDictionary(k => k.Key, v => v.Value?.ToString() ?? string.Empty);
+        SelectedEmployeeId = EmpData.GetValueOrDefault("Id");
+        isEditPopUp = true;
+    }
+
+    private void CloseEditDialog() => isEditPopUp = false;
+
+    // Submit Methods
+    private async Task SubmitAddColumn()
+    {
+        if (await DataBaseServices.ColumnExistsAsync(FormData.TableName, FormData.ColumnName))
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Column '{FormData.ColumnName}' already exists.");
+            return;
+        }
+
+        await DataBaseServices.ExecuteAlterTableQueryAsync(FormData.TableName, FormData.ColumnName, FormData.DataType);
+        CloseAddColumnDialog();
+        await LoadEmployeeDataAsync();
+    }
+
+    private async Task SubmitNewRow()
+    {
+        await DataBaseServices.InsertEmployeeAsync(EmployeeData);
+        EmployeeData.Clear();
+        CloseAddRowDialog();
+        await LoadEmployeeDataAsync();
+    }
+
+    private async Task SubmitEmployeeUpdate()
+    {
+        if (!EmpData.ContainsKey("Id"))
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Employee ID is missing.");
+            return;
+        }
+
+        await DataBaseServices.UpdateEmployeeAsync(EmpData.ToDictionary(k => k.Key, v => (object)v.Value));
+        CloseEditDialog();
+        await LoadEmployeeDataAsync();
+    }
+
+    //delete
+    private async Task DeleteEmployee(dynamic employee)
+    {
+        // Convert dynamic object to dictionary
+        var employeeDict = (IDictionary<string, object>)employee;
+
+        // Try to get the "Id" value from the dictionary
+        if (!employeeDict.TryGetValue("Id", out var employeeIdObj) || employeeIdObj == null)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Employee ID is missing.");
+            return;
+        }
+
+        // Convert the object to a string
+        string employeeId = employeeIdObj.ToString();
+
+        // Confirm deletion
+        var confirmed = await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete employee with ID '{employeeId}'?");
+        if (!confirmed)
+            return;
+
+        // Call the delete method in the DataBaseServices
+        await DataBaseServices.DeleteEmployeeAsync(employeeId);
+
+        // Reload data after deletion
+        await LoadEmployeeDataAsync();
+    }
+
+
+
+    // Data Methods
+    private async Task LoadEmployeeDataAsync()
+    {
+        isLoading = true;
+        var result = await DataBaseServices.GetEmployeesAsync();
+        Emp = result.Item2;
+        Columns = await DataBaseServices.GetColumnVisibilityAsync("Employees");
+        isLoading = false;
+    }
+
+    private async Task ToggleColumnVisibility(ColumnVisibility column, object value)
+    {
+        column.IsVisible = (bool)value;
+        await DataBaseServices.UpdateColumnVisibilityAsync(column);
+        StateHasChanged();
+    }
+
+    private void HandleInputChange(ChangeEventArgs e, string columnName)
+    {
+        EmployeeData[columnName] = e.Value?.ToString();
+    }
+}

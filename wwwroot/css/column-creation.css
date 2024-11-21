@@ -1,0 +1,164 @@
+﻿/*namespace DynamicGridGeneration.wwwroot.css
+{
+    public class column_creation
+    {
+    }
+}*/
+
+/* Styling for the column selection container */
+.col-select {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    max-height: 250px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    background-color: #fdfdfd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+/* Styling for individual column items */
+.col-item {
+    /*display: inline-flex;*/
+    align-items: center;
+    padding: 5px 10px;
+    background-color: #fff; /* White background for column items */
+    border-radius: 3px; /* Slightly rounded edges */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+    /* Style for the checkbox input within the column item */
+    .col-item input[type="checkbox"] {
+        margin-right: 10px;
+    }
+
+/* Form container inside the dialog */
+.form-group {
+    margin-bottom: 15px; /* Add some spacing between form fields */
+}
+
+/* Styling for input text and select boxes */
+input.form-control, select.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.2s;
+}
+
+    input.form-control:focus, select.form-control:focus {
+        border-color: #80bdff;
+        outline: none;
+    }
+
+/* Button styling */
+.btn-primary {
+    background-color: #a881af;
+    box-shadow: 0 0 20px #eee;
+    background-image: linear-gradient(to right, #4776E6 0%, #8E54E9 51%, #4776E6 100%);
+    background-size: 200% auto;
+    border-radius: 10px;
+    color: #fff;
+    color: white;
+    margin: 5px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    transition: 0.5s;
+    text-align: center;
+}
+
+.btn-primary:hover {
+    background-position: right center;
+    color: #fff;
+    text-decoration: none;
+}
+
+.btn-secondary {
+    background-color: #a881af;
+    box-shadow: 0 0 20px #eee;
+    background-image: linear-gradient(to right, #757F9A 0%, #D7DDE8 51%, #757F9A 100%);
+    background-size: 200% auto;
+    border-radius: 10px;
+    color: #fff;
+    color: white;
+    margin: 5px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    transition: 0.5s;
+    text-align: center;
+}
+
+.btn-secondary:hover {
+    background-position: right center;
+    color: #fff;
+    text-decoration: none;
+}
+
+.btn-grad {
+    background-image: linear-gradient(to right, #FF512F 0%, #F09819 51%, #FF512F 100%);
+    background-color: #a881af;
+    box-shadow: 0 0 20px #eee;
+    background-size: 200% auto;
+    border-radius: 10px;
+    color: #fff;
+    color: white;
+    margin: 5px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    transition: 0.5s;
+    text-align: center;
+}
+
+    .btn-grad:hover {
+        background-position: right center; /* change the direction of the change here */
+        color: #fff;
+        text-decoration: none;
+    }
+
+
+.btn-submit {
+    background-image: linear-gradient(to right, #757F9A 0%, #D7DDE8 51%, #757F9A 100%);
+    background-color: #a881af;
+    box-shadow: 0 0 20px #eee;
+    background-size: 200% auto;
+    border-radius: 10px;
+    color: #fff;
+    color: white;
+    margin: 5px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    transition: 0.5s;
+    text-align: center;
+}
+
+    .btn-submit:hover {
+        background-position: right center; /* change the direction of the change here */
+        color: #fff;
+        text-decoration: none;
+    }
+         
+
+/* Loading text style */
+p {
+    font-size: 16px;
+    color: #555;
+}
+
+/* General dialog styling */
+.telerik-dialog .telerik-dialog-content {
+    padding: 20px;
+}
+
+.telerik-dialog .telerik-dialog-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.telerik-dialog .telerik-dialog-actions {
+    text-align: right;
+}
+
+         
