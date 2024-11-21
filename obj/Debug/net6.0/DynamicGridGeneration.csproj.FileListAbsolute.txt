@@ -162,3 +162,4 @@ D:\MSDevPrac\DynamicGridGeneration\obj\Debug\net6.0\refint\DynamicGridGeneration
 D:\MSDevPrac\DynamicGridGeneration\obj\Debug\net6.0\DynamicGridGeneration.pdb
 D:\MSDevPrac\DynamicGridGeneration\obj\Debug\net6.0\DynamicGridGeneration.genruntimeconfig.cache
 D:\MSDevPrac\DynamicGridGeneration\obj\Debug\net6.0\ref\DynamicGridGeneration.dll
+D:\MSDevPrac\DynamicGridGeneration\obj\Debug\net6.0\DynamicGridGeneration.sourcelink.json

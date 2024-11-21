@@ -51,9 +51,11 @@
         <div class="col-select">
             @foreach (var column in Columns)
             {
-                <div class="col-item">
-                    <input type="checkbox" checked="@column.IsVisible" @onchange="(e) => ToggleColumnVisibility(column, e.Value)" /> @column.ColumnName
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="@column.ColumnName" checked="@column.IsVisible" @onchange="(e) => ToggleColumnVisibility(column, e.Value)" />
+                    <label class="form-check-label" for="@column.ColumnName">@column.ColumnName</label>
                 </div>
+
             }
         </div>
     </DialogContent>
@@ -228,12 +230,23 @@ else
     // Data Methods
     private async Task LoadEmployeeDataAsync()
     {
-        isLoading = true;
-        var result = await DataBaseServices.GetEmployeesAsync();
-        Emp = result.Item2;
-        Columns = await DataBaseServices.GetColumnVisibilityAsync("Employees");
-        isLoading = false;
+        try
+        {
+            isLoading = true;
+            var result = await DataBaseServices.GetEmployeesAsync();
+            Emp = result.Item2;
+            Columns = await DataBaseServices.GetColumnVisibilityAsync("Employees");
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Error loading data: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
     }
+
 
     private async Task ToggleColumnVisibility(ColumnVisibility column, object value)
     {
