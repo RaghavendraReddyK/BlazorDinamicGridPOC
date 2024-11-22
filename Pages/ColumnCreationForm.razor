@@ -109,7 +109,7 @@ else
         <GridColumns>
             <GridColumn>
                 <Template Context="row">
-                    <TelerikButton @onclick="() => OpenEditDialog(row)" Icon="SvgIcon.Pencil"></TelerikButton>
+                    <TelerikButton Class = "btn-warning" @onclick="() => OpenEditDialog(row)" Icon="SvgIcon.Pencil"></TelerikButton>
                     <TelerikButton Class="btn-danger" @onclick="() => DeleteEmployee(row)" Icon="SvgIcon.Trash"></TelerikButton>
                 </Template>
             </GridColumn>
@@ -120,9 +120,22 @@ else
         </GridColumns>
     </TelerikGrid>
 }
+<TelerikNotification @ref="NotificationComponent"
+                     HorizontalPosition="@NotificationHorizontalPosition.Right"
+                     VerticalPosition="@NotificationVerticalPosition.Top"></TelerikNotification>
+
+<style>
+    .k-notification {
+        width: 300px;
+        font-size: 13px;
+        margin-top: 55px;
+        margin-right: 5px
+    }
+</style>
 
 @code {
     // Properties
+    TelerikNotification NotificationComponent { get; set; }
     private TelerikDialog dialogRef { get; set; }
     private TelerikDialog visibilityDialogRef { get; set; }
     private TelerikDialog popIsVisible { get; set; }
@@ -174,6 +187,13 @@ else
         await DataBaseServices.ExecuteAlterTableQueryAsync(FormData.TableName, FormData.ColumnName, FormData.DataType);
         CloseAddColumnDialog();
         await LoadEmployeeDataAsync();
+        NotificationComponent.Show(new NotificationModel()
+            {
+                Text = $"New Coloumn added by name {FormData.ColumnName}",
+                ThemeColor = ThemeConstants.Notification.ThemeColor.Success,
+                CloseAfter = 5000,
+
+            });
     }
 
     private async Task SubmitNewRow()
@@ -182,6 +202,13 @@ else
         EmployeeData.Clear();
         CloseAddRowDialog();
         await LoadEmployeeDataAsync();
+        NotificationComponent.Show(new NotificationModel()
+            {
+                Text = $"New Employee Added",
+                ThemeColor = ThemeConstants.Notification.ThemeColor.Success,
+                CloseAfter = 5000,
+
+            });
     }
 
     private async Task SubmitEmployeeUpdate()
@@ -195,6 +222,13 @@ else
         await DataBaseServices.UpdateEmployeeAsync(EmpData.ToDictionary(k => k.Key, v => (object)v.Value));
         CloseEditDialog();
         await LoadEmployeeDataAsync();
+        NotificationComponent.Show(new NotificationModel()
+            {
+                Text = $"Employee Data Updated",
+                ThemeColor = ThemeConstants.Notification.ThemeColor.Success,
+                CloseAfter = 5000,
+
+            });
     }
 
     //delete
@@ -223,6 +257,13 @@ else
 
         // Reload data after deletion
         await LoadEmployeeDataAsync();
+        NotificationComponent.Show(new NotificationModel()
+            {
+                Text = $"Employee Deleted",
+                ThemeColor = ThemeConstants.Notification.ThemeColor.Error,
+                CloseAfter = 5000,
+
+            });
     }
 
 
@@ -253,6 +294,25 @@ else
         column.IsVisible = (bool)value;
         await DataBaseServices.UpdateColumnVisibilityAsync(column);
         StateHasChanged();
+        if(column.IsVisible != true){
+            NotificationComponent.Show(new NotificationModel()
+            {
+                Text = $"{column.ColumnName} Hidden",
+                ThemeColor = ThemeConstants.Notification.ThemeColor.Info,
+                CloseAfter = 5000,
+
+            });
+        }
+        else
+        {
+            NotificationComponent.Show(new NotificationModel()
+                {
+                    Text = $"{column.ColumnName} is now visible",
+                    ThemeColor = ThemeConstants.Notification.ThemeColor.Info,
+                    CloseAfter = 5000,
+
+                });
+        }
     }
 
     private void HandleInputChange(ChangeEventArgs e, string columnName)

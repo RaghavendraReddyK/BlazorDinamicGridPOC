@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "JcS+RztDWyzsI+5MD7E5GDdK6sABgwziN9oOEBTX/Yg=",
+  "Hash": "qpXXBMFpOTbblcO7Hmj1EzIVEG7TfwBHbXQoBnxwzXI=",
   "Source": "DynamicGridGeneration",
   "BasePath": "_content/DynamicGridGeneration",
   "Mode": "Default",
@@ -547,6 +547,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\28962870-3c61-4a98-a111-3e92af023cd5_std2.jpg"
+    },
+    {
+      "Identity": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\uploads\\2f02428a-32d7-4e73-95c0-2b21dc2957d3_std2.jpg",
+      "SourceId": "DynamicGridGeneration",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\",
+      "BasePath": "_content/DynamicGridGeneration",
+      "RelativePath": "uploads/2f02428a-32d7-4e73-95c0-2b21dc2957d3_std2.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\2f02428a-32d7-4e73-95c0-2b21dc2957d3_std2.jpg"
     },
     {
       "Identity": "D:\\MSDevPrac\\DynamicGridGeneration\\wwwroot\\uploads\\6eaf7f70-f59d-43b7-a1e4-cc83bb9d7e4e_std1.jpg",

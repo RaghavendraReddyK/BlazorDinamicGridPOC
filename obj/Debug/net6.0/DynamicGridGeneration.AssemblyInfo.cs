@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DynamicGridGeneration")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+72c2c92b074bee1765ec08d4e7c2d9f9ee3a77a3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+57af4a8870fa4bb99dd0a5b60b58b814d252cea3")]
 [assembly: System.Reflection.AssemblyProductAttribute("DynamicGridGeneration")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DynamicGridGeneration")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

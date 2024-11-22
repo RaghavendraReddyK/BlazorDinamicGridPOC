@@ -12,11 +12,14 @@ namespace DynamicGridGeneration.Services
 {
     public class DataBaseServices
     {
-        private readonly string _connectionString = "Server=SSSLBG4NB1027\\SQLEXPRESS;Database=DynamicGridDb;Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=true";
-        private ApplicationDBContext _dbContext;
-        public DataBaseServices(ApplicationDBContext dbContext)
+        private readonly string _connectionString;
+        private readonly IConfiguration _configuration;
+        //= "Server=SSSLBG4NB1027\\SQLEXPRESS;Database=DynamicGridDb;Trusted_Connection=True;TrustServerCertificate=True;Integrated Security=true"
+
+        public DataBaseServices(IConfiguration configuration)
         {
-            _dbContext = dbContext;
+           _configuration = configuration;
+            _connectionString = _configuration.GetConnectionString("DefaultConnection");
         }
 
         public async Task<List<string>> GetAllVisibleColumns()
@@ -35,21 +38,28 @@ namespace DynamicGridGeneration.Services
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                var sqlQuery = $"ALTER TABLE [{tableName}] ADD [{columnName}] {dataType}";
                 await connection.OpenAsync();
-                var command = new SqlCommand(sqlQuery, connection);
-                await command.ExecuteNonQueryAsync();
 
-                var cv = new ColumnVisibility()
+                // Execute the ALTER TABLE query
+                var sqlQuery = $"ALTER TABLE [{tableName}] ADD [{columnName}] {dataType}";
+                await connection.ExecuteAsync(sqlQuery);
+
+                // Insert the column visibility record
+                var insertQuery = @"
+            INSERT INTO ColumnVisibility (TableName, ColumnName, IsVisible)
+            VALUES (@TableName, @ColumnName, @IsVisible)";
+
+                var columnVisibility = new
                 {
                     TableName = tableName,
                     ColumnName = columnName,
-                    IsVisible = true,
+                    IsVisible = true
                 };
-                await _dbContext.ColumnVisibility.AddAsync(cv);
-                await _dbContext.SaveChangesAsync();
+
+                await connection.ExecuteAsync(insertQuery, columnVisibility);
             }
         }
+
 
         public async Task<bool> ColumnExistsAsync(string tableName, string columnName)
         {
@@ -57,13 +67,18 @@ namespace DynamicGridGeneration.Services
             {
                 await connection.OpenAsync();
 
-                // Checking if the column exists in the specified table
-                var query = $"SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @tableName AND COLUMN_NAME = @columnName";
-                var exists = await connection.ExecuteScalarAsync<int>(query, new { tableName, columnName });
+                // Use UPPER for case-insensitive comparison
+                var query = @"
+            SELECT COUNT(*) 
+            FROM INFORMATION_SCHEMA.COLUMNS 
+            WHERE UPPER(TABLE_NAME) = UPPER(@tableName) 
+              AND UPPER(COLUMN_NAME) = UPPER(@columnName)";
 
+                var exists = await connection.ExecuteScalarAsync<int>(query, new { tableName, columnName });
                 return exists > 0;
             }
         }
+
 
 
         // Fetches employees data and column names dynamically

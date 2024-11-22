@@ -4,12 +4,12 @@ using DynamicGridGeneration.Model;
 
 namespace DynamicGridGeneration.Services
 {
-    public class StudentDataService
+    public class CustomerDataService
     {
         private readonly string _connectionString = "";
         private readonly IConfiguration _configuration;
 
-        public StudentDataService(IConfiguration configuration)
+        public CustomerDataService(IConfiguration configuration)
         {
             _configuration = configuration;
             _connectionString = _configuration.GetConnectionString("DefaultConnection");

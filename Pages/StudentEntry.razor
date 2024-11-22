@@ -1,9 +1,23 @@
 ﻿@page "/StudentDetails"
-@inject StudentDataService StudentDataService;
+@inject CustomerDataService StudentDataService;
 
-<TelerikListView Data="@StudentData">
+
+<style>
+    .k-notification {
+        width: 300px;
+        font-size: 13px;
+        margin-bottom: 40px;
+        margin-right: 5px
+    }
+</style>
+
+<TelerikNotification @ref="NotificationComponent"
+                     HorizontalPosition="@NotificationHorizontalPosition.Center"
+                     VerticalPosition="@NotificationVerticalPosition.Bottom"></TelerikNotification>
+
+<TelerikListView Data="@CustomerData">
     <HeaderTemplate>
-        Students List
+        Customer List
     </HeaderTemplate>
     <Template>
         <div class="student-card">
@@ -25,11 +39,12 @@
     </Template>
 </TelerikListView>
 
-<TelerikDialog Visible="@IsEditDialogOpen" Title="Edit Student" Width="600px" Height="400px">
+
+<TelerikDialog Visible="@IsEditDialogOpen" Width="600px" Height="400px" ShowCloseButton="false">
     <DialogContent>
     <EditForm Model="@SelectedStudent" OnValidSubmit="SaveStudent">
         <div class="edit-form">
-            <h3>Edit Student</h3>
+            <h3>Edit Customer</h3>
             <div class="form-group">
                 <label>Name:</label>
                 <InputText class="form-control" @bind-Value="SelectedStudent.Name" />
@@ -75,7 +90,8 @@
 </TelerikDialog>
 
 @code {
-    public List<Student> StudentData { get; set; } = new();
+    TelerikNotification NotificationComponent { get; set; }
+    public List<Student> CustomerData { get; set; } = new();
     public Student SelectedStudent { get; set; } = new();
     public bool IsEditDialogOpen { get; set; }
 
@@ -104,7 +120,7 @@
 
     private async Task GetStudentsData()
     {
-        StudentData = await StudentDataService.GetStudentsAsync();
+        CustomerData = await StudentDataService.GetStudentsAsync();
     }
 
     private void OpenEditDialog(Student student)
@@ -125,6 +141,13 @@
         // Refresh data and close dialog
         await GetStudentsData();
         CloseEditDialog();
+        NotificationComponent.Show(new NotificationModel()
+            {
+                Text = $"Data Successfully Updated",
+                ThemeColor = ThemeConstants.Notification.ThemeColor.Tertiary,
+                CloseAfter = 3000,
+
+            });
     }
 
     private async Task OnSelect(InputFileChangeEventArgs e)
@@ -160,6 +183,13 @@
             if (SelectedStudent != null)
             {
                 SelectedStudent.Image = $"/uploads/{uniqueFileName}";
+                NotificationComponent.Show(new NotificationModel()
+                    {
+                        Text = $"Image Selected ",
+                        ThemeColor = ThemeConstants.Notification.ThemeColor.Tertiary,
+                        CloseAfter = 5000,
+
+                    });
             }
             else
             {
